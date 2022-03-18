@@ -8,8 +8,10 @@ dotenv.config();
 
 //routers
 const blogRouter = require('./routers/blog.router');
+const authRouter = require('./routers/auth.router');
 
 app.use('/blog', blogRouter);
+app.use('/auth',authRouter);
 
 
 
