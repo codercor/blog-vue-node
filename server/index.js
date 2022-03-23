@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
-
+app.use(require("cors")());
 app.use(express.json()); //isteklerin body'sinde yolladığımız json veriyi parse etmek (yani yazidan objecte çevirme) için
+
+
 
 const dotenv = require('dotenv');
 dotenv.config();
