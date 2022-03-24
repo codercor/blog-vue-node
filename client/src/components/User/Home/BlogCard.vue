@@ -19,13 +19,19 @@
     <v-card-actions>
       <v-btn
         color="orange lighten-2"
-        text
+        text      
+        @click="goBlogDetails"
       >
         Devamını Oku
       </v-btn>
 
+      
+      
+
       <v-spacer></v-spacer>
     </v-card-actions>
+
+    <!-- <router-link to="/blog/">Link </router-link> -->
 
   </v-card>
 </template>
@@ -36,6 +42,11 @@
     data: () => ({
       show: false,
     }),
+    methods:{
+      goBlogDetails(){
+        this.$router.push("/blog/"+ this.blog.id)
+      }
+    }
   }
 </script>
 
