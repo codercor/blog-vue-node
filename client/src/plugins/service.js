@@ -14,4 +14,8 @@ instance.fetchBlogs = async () => {
   return (await instance.get("/blog")).data;
 }
 
+instance.fetchBlogById = async (id) => {
+  return (await instance.get(`/blog/${id}`)).data;
+}
+
 export default instance;

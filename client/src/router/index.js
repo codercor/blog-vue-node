@@ -6,6 +6,14 @@ import Home from '../views/User/Home.vue'
 import About from '../views/User/About.vue'
 import Blog from '../views/User/Blog.vue'
 
+import Login from '../views/Author/Login.vue'
+import Register from '../views/Author/Register.vue'
+
+import Panel from '../views/Author/Panel.vue'
+import PanelListBlogs from '../views/Author/Panel/ListBlogs.vue'
+import PanelNewBlog from '../views/Author/Panel/NewBlog.vue'
+
+
 //Author Views
 
 Vue.use(VueRouter)
@@ -22,9 +30,26 @@ const routes = [
     component: About
   },
   {
-    path: '/blog',
+    path: '/blog/:id',
     name: 'Blog',
-    component: Blog
+    component: Blog,
+  },
+  {
+    path: '/panel',
+    name: 'Panel',
+    component: Panel,
+    children: [
+      {
+        path: '/',
+        name: 'PanelListBlogs',
+        component: PanelListBlogs
+      },
+      {
+        path: 'new',
+        name: 'PanelNewBlog',
+        component: PanelNewBlog
+      }
+    ]
   }
 ]
 
