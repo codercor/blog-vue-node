@@ -1,1 +1,2 @@
-blog details sayfası oluştur, tıklandığında o elemanın içeriği okunması
+Login ve Register sayfalarının hazırlanması (vuetify)
+Author(yazar) için store module'ının yapısının yapılması (vuex)
