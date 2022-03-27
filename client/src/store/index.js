@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import userModule from './user.module'
+import authorModule from './author.module'
 
 export default new Vuex.Store({
   state: {
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    user: userModule
+    user: userModule,
+    author: authorModule
   },
 })
