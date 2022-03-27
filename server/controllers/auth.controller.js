@@ -20,7 +20,7 @@ const login = async (req, res) => {
     } else {
       const { username, id, password, name, surname } = user;
 
-      const accesToken = generateToken(
+      const accessToken = generateToken(
         { username, id, password, name, surname },
         "10m"
       );
@@ -31,7 +31,7 @@ const login = async (req, res) => {
 
       res.json({
         user: { username, id, name, surname },
-        accesToken,
+        accessToken,
         refreshToken,
       });
     }

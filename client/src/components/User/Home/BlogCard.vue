@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344">
+  <v-card  class="mx-auto" max-width="344">
     <v-img
       :src="
         blog.coverImage || 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'
