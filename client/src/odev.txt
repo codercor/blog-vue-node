@@ -1,2 +1,2 @@
-Login ve Register sayfalarının hazırlanması (vuetify)
-Author(yazar) için store module'ının yapısının yapılması (vuex)
+//Register kısmı (oto login olduğunu unutmayalım)
+//korumalı sayfalarda token kontrolü
