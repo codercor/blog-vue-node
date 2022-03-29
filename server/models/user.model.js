@@ -1,6 +1,8 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const sequelize = require("../config/database");
 
+const Blog = require("./blog.model");
+
 class User extends Model {}
 
 User.init(
@@ -34,7 +36,14 @@ User.init(
   }
 );
 
+User.hasMany(Blog,{
+    foreignKey: 'userId',
+    onDelete: 'CASCADE',
+})
+
 sequelize.sync();
 //sequelize.sync({force:true});
+
+
 
 module.exports = User;

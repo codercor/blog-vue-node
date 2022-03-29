@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "45.84.189.195",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "node-vue-blog",
+            "database": "codercor_blog",
+            "username": "codercor_blog_orhan",
+            "password": "LW1vnTm^(-@r"
+        }
+    ]
+}
