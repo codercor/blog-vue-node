@@ -18,6 +18,7 @@ const authorModule = {
   },
   actions: {
     async getBlogs({ commit }) {
+      commit("setBlogs", []);
       let blogs = await service.panel.fetchMyBlogs();
       commit("setBlogs", blogs);
     },
