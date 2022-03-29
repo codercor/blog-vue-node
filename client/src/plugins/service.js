@@ -18,11 +18,14 @@ instance.fetchBlogById = async (id) => {
   return (await instance.get(`/blog/${id}`)).data;
 }
 
-instance.login = async (loginData) => {
+
+//auth services
+instance.auth={};
+instance.auth.login = async (loginData) => {
   return (await instance.post("/auth/login", loginData)).data;
 }
 
-instance.register = async (registerData) => {
+instance.auth.register = async (registerData) => {
   return (await instance.post("/auth/register", registerData)).data;
 }
 

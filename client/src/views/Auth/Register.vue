@@ -14,29 +14,28 @@
                               name="name"
                               label="Adı"
                               type="text"
+                              v-model="name"
                            ></v-text-field>
                            <v-text-field
                               prepend-icon="mdi-account"
                               name="surname"
                               label="Soyadı"
+                              v-model="surname"
                               type="text"
-                           ></v-text-field>
-                           <v-text-field
-                              prepend-icon="mdi-at"
-                              name="email"
-                              label="E-Mail"
-                              type="email"
                            ></v-text-field>
                            <v-text-field
                               prepend-icon="mdi-account-check"
                               name="username"
                               label="Kullanıcı Adı"
+                              v-model="username"
+                              :rules="[rules.username]"
                               type="text"
                            ></v-text-field>
                            <v-text-field
                               prepend-icon="mdi-lock"
                               id="password"
                               name="password"
+                              v-model="password"
                               label="Şifre"
                               type="password"
                            ></v-text-field>
@@ -46,12 +45,14 @@
                               name="password"
                               label="Şifre Tekrar"
                               type="password"
+                              v-model="password2"
+                              :rules="[rules.samePassword]"
                            ></v-text-field>
                         </v-form>
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" to="/">Kayıt ol</v-btn>
+                        <v-btn @click="register" color="primary">Kayıt ol</v-btn>
                      </v-card-actions>
                   </v-card>
                </v-flex>
@@ -61,8 +62,50 @@
 </template>
 
 <script>
+import service from '@/plugins/service.js';
+import { authMixin,notificationMixin } from "@/mixins";
 export default {
    name: 'Login',
+   mixins: [authMixin,notificationMixin],
+   data(){
+      return {
+         name:'',
+         surname:'',
+         password2: '',
+      }
+   },
+   methods:{
+      register(){
+         this.isLoading = true;
+         service.auth.register({
+            name: this.name,
+            surname: this.surname,
+            username: this.username,
+            password: this.password,
+         }).then(data => {
+            this.loginByData(data);
+         }).catch(err => {
+            console.log("err",err);
+            this.setNotification({
+               type: 'error',
+               text: 'Kayıt sırasında hata oluştu',
+               timeout: 5000,
+            });
+         }).finally(() => {
+            this.isLoading = false;
+         });
+      }
+   },
+   computed:{
+      rules(){
+         return {
+            samePassword: (value) => {
+               return value === this.password
+            },
+            username: (value)=> value.length >= 8 || "Kullanıcı adı en az 8 karakter olmalıdır",
+         }
+      }
+   }
 };
 </script>
 

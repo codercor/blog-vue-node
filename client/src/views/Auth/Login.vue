@@ -40,40 +40,18 @@
 
 <script>
 import service from "../../plugins/service.js";
-import { mapMutations } from "vuex";
+import { authMixin,notificationMixin } from "@/mixins";
 export default {
   name: "Login",
-  data() {
-    return {
-      username: "",
-      password: "",
-      isShowPassword: false,
-      isLoading: false,
-    };
-  },
+  mixins: [authMixin,notificationMixin],
   methods: {
-    ...mapMutations(["setNotification"]),
-    ...mapMutations("author", ["setUserData"]),
-    showPassword() {
-      this.isShowPassword = !this.isShowPassword;
-    },
     login() {
       const { username, password } = this;
       this.isLoading = true;
-      service
+      service.auth
         .login({ username, password })
         .then((data) => {
-          this.isLoading = false;
-          console.log(data);
-          this.setNotification({
-            type: "success",
-            text: `Hoşgeldin ${data.user.name}`,
-            timeout: 3000,
-          });
-          localStorage.setItem("accessToken", data.accessToken);
-          localStorage.setItem("refreshToken", data.refreshToken);
-          this.setUserData({ user: data.user, isAuthenticated: true });
-          this.$router.push("/panel");
+          this.loginByData(data);
         })
         .catch((err) => {
           this.setNotification({
