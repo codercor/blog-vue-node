@@ -22,11 +22,11 @@ const login = async (req, res) => {
 
       const accessToken = generateToken(
         { username, id, password, name, surname },
-        "10s"
+        "10m"
       );
       const refreshToken = generateToken(
         { username, id, password, name, surname },
-        "30s"
+        "15m"
       );
 
       res.json({
@@ -50,11 +50,11 @@ const register = async (req, res) => {
 
     const accesToken = generateToken(
       { username, id, password, name, surname },
-      "10s"
+      "10m"
     );
     const refreshToken = generateToken(
       { username, id, password, name, surname },
-      "30s"
+      "15m"
     );
 
     res.json({
@@ -88,8 +88,8 @@ const check = async (req, res) => {
       var difference = exp.getTime() - now.getTime(); //şu anki tarih ile expire tarihi arasındaki fark
       var resultInMinutes = Math.round(difference / 60000); //farkı milisaniye cinsinden al ve dakika cinsinden hesapla
       if (resultInMinutes < 5) { //5 dakikadan az ise kalan süresi
-        const newAccessToken = generateToken({ ...accessDecoded }, "10s");
-        const newRefreshToken = generateToken({ ...accessDecoded }, "30s");
+        const newAccessToken = generateToken({ ...accessDecoded }, "10m");
+        const newRefreshToken = generateToken({ ...accessDecoded }, "15m");
         //accessToken'ı ve refreshToken'ı yeniden oluştur
         res.json({
           accesToken: newAccessToken,
@@ -114,8 +114,8 @@ const check = async (req, res) => {
         console.log("refreshDecoded", refreshDecoded);
         console.log("Refresh geçerli");
         //refreshToken geçerli ise
-        const newAccessToken = generateToken({ ...refreshDecoded }, "10s");
-        const newRefreshToken = generateToken({ ...refreshDecoded }, "30s");
+        const newAccessToken = generateToken({ ...refreshDecoded }, "10m");
+        const newRefreshToken = generateToken({ ...refreshDecoded }, "15m");
         //accessToken'ı ve refreshToken'ı yeniden oluşturup gönder
         res.json({
           accessToken: newAccessToken,
