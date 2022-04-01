@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import VuexPersistence from 'vuex-persist'
 Vue.use(Vuex)
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+  key:"blog-app",
+  modules:['author']
+})
+
 
 import userModule from './user.module'
 import authorModule from './author.module'
@@ -39,4 +46,5 @@ export default new Vuex.Store({
     user: userModule,
     author: authorModule
   },
+  plugins:[vuexLocal.plugin]
 })

@@ -22,11 +22,11 @@ const login = async (req, res) => {
 
       const accessToken = generateToken(
         { username, id, password, name, surname },
-        "10m"
+        "10s"
       );
       const refreshToken = generateToken(
         { username, id, password, name, surname },
-        "15m"
+        "30s"
       );
 
       res.json({
@@ -50,11 +50,11 @@ const register = async (req, res) => {
 
     const accesToken = generateToken(
       { username, id, password, name, surname },
-      "1m"
+      "10s"
     );
     const refreshToken = generateToken(
       { username, id, password, name, surname },
-      "2m"
+      "30s"
     );
 
     res.json({
@@ -72,10 +72,11 @@ const register = async (req, res) => {
 const check = async (req, res) => {
   const accessToken = req.headers["access-token"]; //header'dan gelen access-token
   const refreshToken = req.headers["refresh-token"]; //header'dan gelen refresh-token
-  if (!accessToken) res.status(401).json({ message: UNAUTHORİZED }); // accessToken yoksa 401 döndür
-  if (!refreshToken) res.status(401).json({ message: UNAUTHORİZED }); // refreshToken yoksa 401 döndür
+  if (!accessToken) res.status(401).json({ message: UNAUTHORİZED,toLogin:true }); // accessToken yoksa 401 döndür
+  if (!refreshToken) res.status(401).json({ message: UNAUTHORİZED,toLogin:true }); // refreshToken yoksa 401 döndür
   else { //accessToken ve refreshToken varsa
     try {
+      console.log("accesss deneniyor");
       const accessDecoded = jwt.verify( //accessToken'ın geçerli olup olmadığını kontrol et
         accessToken,
         process.env.TOKEN_PRIVATE_KEY
@@ -87,8 +88,8 @@ const check = async (req, res) => {
       var difference = exp.getTime() - now.getTime(); //şu anki tarih ile expire tarihi arasındaki fark
       var resultInMinutes = Math.round(difference / 60000); //farkı milisaniye cinsinden al ve dakika cinsinden hesapla
       if (resultInMinutes < 5) { //5 dakikadan az ise kalan süresi
-        const newAccessToken = generateToken({ ...accessDecoded }, "10m");
-        const newRefreshToken = generateToken({ ...accessDecoded }, "15m");
+        const newAccessToken = generateToken({ ...accessDecoded }, "10s");
+        const newRefreshToken = generateToken({ ...accessDecoded }, "30s");
         //accessToken'ı ve refreshToken'ı yeniden oluştur
         res.json({
           accesToken: newAccessToken,
@@ -102,21 +103,27 @@ const check = async (req, res) => {
       }
     } catch (error) { //accessToken geçersiz ise
       try {
+        console.log("Access tokendan hata çıktı refresh deneniyor");
         //refreshToken'ın geçerli olup olmadığını kontrol et
         const refreshDecoded = jwt.verify(
           refreshToken,
           process.env.TOKEN_PRIVATE_KEY
         );
+        delete refreshDecoded.iat;
+        delete refreshDecoded.exp;
+        console.log("refreshDecoded", refreshDecoded);
+        console.log("Refresh geçerli");
         //refreshToken geçerli ise
-        const newAccessToken = generateToken({ ...refreshDecoded }, "10m");
-        const newRefreshToken = generateToken({ ...refreshDecoded }, "15m");
+        const newAccessToken = generateToken({ ...refreshDecoded }, "10s");
+        const newRefreshToken = generateToken({ ...refreshDecoded }, "30s");
         //accessToken'ı ve refreshToken'ı yeniden oluşturup gönder
         res.json({
-          accesToken: newAccessToken,
+          accessToken: newAccessToken,
           refreshToken: newRefreshToken,
           refreshed: true,
         });
       } catch (error) { //refreshToken geçersiz ise
+        console.log("Refresh token hatası",error);
         res.status(401).json({ message: UNAUTHORİZED,toLogin:true });
         //401 döndür client tarafında 401 cevabını alınca giriş yaptır.
       }

@@ -6,6 +6,8 @@ const authMiddleware = (req, res, next) => {
     else{
         try {
             const decoded = jwt.verify(accessToken, process.env.TOKEN_PRIVATE_KEY);
+            const expiresIn = decoded.exp - Math.floor(Date.now() / 1000);
+            console.log(expiresIn);
             req.user = decoded;
             
             next();

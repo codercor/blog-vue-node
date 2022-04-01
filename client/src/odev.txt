@@ -1,2 +1,2 @@
-// gelen cevapta yetkisiz giriş durumundan bir hata varsa logine yönlendirilsin
 // server tarafında blog ekleme olayı panel adresine göre düzenlenecek (ipucu : req.user.id)
+//istek postman'e de eklenecek.

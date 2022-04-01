@@ -11,6 +11,15 @@ const authorModule = {
     setBlogs(state, payload) {
       state.blogs = payload;
     },
+    setIsAuthenticated(state, payload) {
+      state.isAuthenticated = payload;
+    },
+    logout(state){
+      state.isAuthenticated = false;
+      state.user = {};
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    },
     setUserData(state, payload) {
       state.user = payload.user;
       state.isAuthenticated = payload.isAuthenticated
@@ -27,6 +36,9 @@ const authorModule = {
     blogs(state) {
       return state.blogs;
     },
+    isAuthenticated(state) {
+      return state.isAuthenticated;
+    }
   },
 };
 
