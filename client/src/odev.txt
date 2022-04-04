@@ -1,2 +1,2 @@
-// server tarafında blog ekleme olayı panel adresine göre düzenlenecek (ipucu : req.user.id)
-//istek postman'e de eklenecek.
+1)düzenleme butonuna basıldığı zaman new blog sayfasındaki gibi bir ekranda o eleman düzenlenebilsin.
+2)silme

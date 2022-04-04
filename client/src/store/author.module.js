@@ -1,4 +1,5 @@
 import service from "../plugins/service";
+import store from './index';
 
 const authorModule = {
   namespaced: true,
@@ -6,6 +7,10 @@ const authorModule = {
     blogs: [],
     isAuthenticated: false,
     user: {},
+    newBlog:{
+      content: "",
+      title: "",
+    }
   },
   mutations: {
     setBlogs(state, payload) {
@@ -24,6 +29,10 @@ const authorModule = {
       state.user = payload.user;
       state.isAuthenticated = payload.isAuthenticated
     },
+    setNewBlog(state, payload){
+      state.newBlog.title = payload.title || state.newBlog.title;
+      state.newBlog.content = payload.content || state.newBlog.content;
+    }
   },
   actions: {
     async getBlogs({ commit }) {
@@ -31,6 +40,16 @@ const authorModule = {
       let blogs = await service.panel.fetchMyBlogs();
       commit("setBlogs", blogs);
     },
+    async createBlog({commit,state}){
+      let blog = await service.panel.createBlog(state.newBlog);
+      commit("setNewBlog", {title:' ',content:' '});
+      store.commit("setNotification",{
+        text: blog.title+" başarıyla oluşturuldu",
+        type: "success",
+        timeout: 6000,
+        link: `/blog/${blog.id}`
+      })
+    }
   },
   getters: {
     blogs(state) {
@@ -38,6 +57,9 @@ const authorModule = {
     },
     isAuthenticated(state) {
       return state.isAuthenticated;
+    },
+    newBlog(state){
+      return state.newBlog;
     }
   },
 };

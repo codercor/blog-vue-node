@@ -1,19 +1,20 @@
 <template>
   <v-container>
       <h1> List Blogs </h1>
-      <v-list>
-        <v-list-item v-for="blog in blogs" :key="blog.id" > 
-        <v-list-item-title> {{blog.title}}  </v-list-item-title>
-         </v-list-item>
-      </v-list>
+      <BlogsTable :blogs="blogs"/>
   </v-container>
 </template>
 
 <script>
 import {mapActions,mapGetters} from 'vuex'
+import BlogsTable from '../../../components/Author/ListBlogs/BlogsTable.vue'
 export default {
+  components: { BlogsTable },
   beforeMount(){
     this.getBlogs()
+  },
+  updated(){
+     console.log(this.blogs);
   },
   methods:{
     ...mapActions("author",['getBlogs'])

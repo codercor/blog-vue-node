@@ -1,12 +1,13 @@
 <template>
   <div>
-      <h1> New Blog </h1>
+    <CreateBlog/>
   </div>
 </template>
 
 <script>
+import CreateBlog from '@/components/Author/CreateBlog'
 export default {
-
+  components: { CreateBlog },
 }
 </script>
 

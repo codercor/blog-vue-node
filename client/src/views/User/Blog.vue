@@ -9,8 +9,8 @@
     <v-card class="mt-5" elevation="19" outlined tile>
       <v-card-title> {{blog.title}} </v-card-title>
       <v-card-subtitle> {{ blogDate }} Tarihinde Orhan tarafından yazıldı. </v-card-subtitle>
-      <v-card-text>
-        {{ blog.content }}
+      <v-card-text v-html="blog.content">
+     
       </v-card-text>
     </v-card>
   </v-container>
@@ -40,6 +40,11 @@ export default {
 </script>
 
 <style scoped>
+@import "~vue2-editor/dist/vue2-editor.css";
+/* Import the Quill styles you want */
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
 .blog-cover-image {
   background-image: url("https://picsum.photos/510/300?random");
   background-size: cover;
@@ -56,4 +61,5 @@ export default {
   width: fit-content;
   padding: 0 20px;
 }
+
 </style>

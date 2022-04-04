@@ -19,6 +19,7 @@ export default new Vuex.Store({
       type: '',
       text: '',
       seen: false,
+      link: null
     }
   },
   mutations: {
@@ -26,6 +27,7 @@ export default new Vuex.Store({
       state.notification.text = payload.text;
       state.notification.type = payload.type;
       state.notification.seen = true;
+      state.notification.link = payload.link || null;
       setTimeout(() => {
         state.notification.seen = false;
       }, payload.timeout || 2000);

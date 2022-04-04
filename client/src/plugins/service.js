@@ -79,5 +79,8 @@ instance.panel = {};
 instance.panel.fetchMyBlogs = async () => {
   return (await instance.get("/panel/myBlogs")).data;
 };
+instance.panel.createBlog = async (blog) => {
+  return (await instance.post("/panel/createBlog", blog)).data;
+}
 
 export default instance;
