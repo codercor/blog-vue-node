@@ -78,13 +78,10 @@ const getByUserId = async (req, res) => {
   }
 };
 
-const addByUserId = async (req,res)=>{
+const createByUserId = async (req,res)=>{
   try {
-    const blog = await BlogModel.create(req.body,{
-      where:{
-        userId: req.user.id
-      }
-    });
+    req.body.userId = req.user.id;
+    const blog = await BlogModel.create(req.body);
     res.json(blog);
   } catch (error) {
     res.status(500).json(error);
@@ -98,5 +95,5 @@ module.exports = {
   update,
   remove,
   getByUserId,
-  addByUserId
+  createByUserId
 };
