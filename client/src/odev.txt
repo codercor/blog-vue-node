@@ -1,2 +1,1 @@
-1)düzenleme butonuna basıldığı zaman new blog sayfasındaki gibi bir ekranda o eleman düzenlenebilsin.
-2)silme
+1) multer ile 1 file upload örneği yapma ödevi.

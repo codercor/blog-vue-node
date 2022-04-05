@@ -11,59 +11,7 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Item
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Dessert name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
+          <v-card> <CreateBlog /></v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
@@ -91,11 +39,11 @@
     <template v-slot:item.createdAt="{ item }">
       {{ item.createdAt | dateFormat }}
     </template>
-     <template v-slot:item.updatedAt="{ item }">
+    <template v-slot:item.updatedAt="{ item }">
       {{ item.updatedAt | dateFormat }}
     </template>
-     <template v-slot:item.content="{ item }">
-     <div  v-html="item.content.substring(0, 50)+'...'"> </div>
+    <template v-slot:item.content="{ item }">
+      <div v-html="item.content.substring(0, 50) + '...'"></div>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -104,10 +52,12 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import CreateBlog from "../CreateBlog";
 export default {
   props: ["blogs"],
+  components: { CreateBlog },
   data: () => ({
-    dialog: false,
     dialogDelete: false,
     headers: [
       {
@@ -124,6 +74,7 @@ export default {
     ],
     blogs: [],
     editedIndex: -1,
+    itemIdWillDelete: -1,
     editedItem: {
       name: "",
       calories: 0,
@@ -144,6 +95,15 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
+    ...mapGetters("author", ["isEditMode"]),
+    dialog:{
+      get(){
+        return this.isEditMode;
+      },
+      set(value){
+        this.setIsEditMode(value);
+      }
+    }
   },
 
   watch: {
@@ -160,22 +120,23 @@ export default {
   },
 
   methods: {
+    ...mapMutations("author", ["setIsEditMode","setEditedBlog"]),
+    ...mapActions("author", ["deleteBlog","getBlogs"]),
     initialize() {},
 
     editItem(item) {
-      this.editedIndex = this.blogs.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      const {id,title,content} = item;
       this.dialog = true;
+      this.setEditedBlog({id,title,content});
     },
 
     deleteItem(item) {
-      this.editedIndex = this.blogs.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.itemIdWillDelete = item.id;
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.blogs.splice(this.editedIndex, 1);
+   async deleteItemConfirm() {
+      await this.deleteBlog(this.itemIdWillDelete);
       this.closeDelete();
     },
 
@@ -207,7 +168,7 @@ export default {
   filters: {
     dateFormat: function (value) {
       let date = new Date(value);
-        return date.toLocaleString("tr-TR");
+      return date.toLocaleString("tr-TR");
     },
   },
 };

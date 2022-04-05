@@ -81,6 +81,15 @@ instance.panel.fetchMyBlogs = async () => {
 };
 instance.panel.createBlog = async (blog) => {
   return (await instance.post("/panel/createBlog", blog)).data;
+};
+instance.panel.updateBlog = async (blog) => {
+  const { id, title, content } = blog;
+  blog = { title, content };
+  return (await instance.put(`/panel/blog/${id}`, blog)).data;
+};
+
+instance.panel.deleteBlog = async (id) => {
+  return (await instance.delete(`/panel/blog/${id}`)).data;
 }
 
 export default instance;

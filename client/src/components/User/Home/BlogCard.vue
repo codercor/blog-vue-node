@@ -11,7 +11,7 @@
       {{ blog.title }}
     </v-card-title>
 
-    <v-card-subtitle> {{ blog.content.substring(0, 35) }}... </v-card-subtitle>
+    <v-card-subtitle v-html="blog.content.substring(0, 35)+'...'" ></v-card-subtitle>
 
     <v-card-actions>
       <v-btn color="orange lighten-2" text :to="'/blog/' + blog.id">
@@ -35,4 +35,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+  p{
+    display: inline-block !important;
+  }
+</style>
