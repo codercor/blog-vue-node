@@ -3,7 +3,7 @@ const axios = require("axios");
 const router = require("../router");
 const store = require("../store");
 
-const baseURL = "http://localhost:3000";
+export const baseURL = "http://localhost:3000";
 const instance = axios.create({
   baseURL,
 });
@@ -80,6 +80,12 @@ instance.panel.fetchMyBlogs = async () => {
   return (await instance.get("/panel/myBlogs")).data;
 };
 instance.panel.createBlog = async (blog) => {
+  //upload coverimage
+  const formData = new FormData();
+  formData.append("image", blog.coverImage);
+  const coverImageFileName = (await instance.post("/panel/uploadImage", formData)).data.file
+  //console.log("coverImageFileName", coverImageFileName);
+  blog.coverImage = coverImageFileName;
   return (await instance.post("/panel/createBlog", blog)).data;
 };
 instance.panel.updateBlog = async (blog) => {

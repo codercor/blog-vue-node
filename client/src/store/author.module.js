@@ -10,6 +10,7 @@ const authorModule = {
     newBlog: {
       content: "",
       title: "",
+      coverImage: null
     },
     editedBlog: {
       id: null,
@@ -45,8 +46,7 @@ const authorModule = {
       state.isAuthenticated = payload.isAuthenticated;
     },
     setNewBlog(state, payload) {
-      state.newBlog.title = payload.title || state.newBlog.title;
-      state.newBlog.content = payload.content || state.newBlog.content;
+      state.newBlog = payload;
     },
   },
   actions: {
@@ -57,7 +57,7 @@ const authorModule = {
     },
     async createBlog({ commit, state }) {
       let blog = await service.panel.createBlog(state.newBlog);
-      commit("setNewBlog", { title: " ", content: " " });
+      commit("setNewBlog", { title: "", content: "" , coverImage: null});
       store.commit("setNotification", {
         text: blog.title + " başarıyla oluşturuldu",
         type: "success",

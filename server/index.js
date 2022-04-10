@@ -3,7 +3,8 @@ const app = express();
 app.use(require("cors")());
 app.use(express.json()); //isteklerin body'sinde yolladığımız json veriyi parse etmek (yani yazidan objecte çevirme) için
 
-
+//public folder
+app.use('/public',express.static('public'));
 
 const dotenv = require('dotenv');
 dotenv.config();
