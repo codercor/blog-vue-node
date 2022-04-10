@@ -1,1 +1,1 @@
-1) multer ile 1 file upload örneği yapma ödevi.
+1) home view daki sayfalama ile ilgili olan page limit gibi bilgileri store a taşı 
