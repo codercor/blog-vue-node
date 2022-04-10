@@ -8,7 +8,7 @@
         type="file"
         style="display: none"
       />
-      <img :src="previewImage" alt="" />
+      <img :src="imageURL" alt="" />
       <v-btn icon @click="openSelectImage">
         <v-icon color="purple">mdi-image</v-icon>
       </v-btn>
@@ -33,6 +33,7 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import { baseURL } from "../../../plugins/service";
 export default {
   components: { VueEditor },
   data() {
@@ -46,13 +47,25 @@ export default {
     },
     imageSelect() {
       // console.log("Dosya seçildi !");
-      this.newBlogCoverImage = this.$refs.imageInput.files[0];
+      if (this.isEditMode)
+        this.editedCoverImage = this.$refs.imageInput.files[0];
+      else this.newBlogCoverImage = this.$refs.imageInput.files[0];
     },
   },
   computed: {
     previewImage() {
-      console.log("NEW BLOG CI",this.newBlogCoverImage);
-      return this.newBlogCoverImage ? URL.createObjectURL(this.newBlogCoverImage) : null;
+      if (this.isEditMode) {
+        if(this.editedCoverImage){
+          if(typeof(this.editedCoverImage) == "object")
+              return URL.createObjectURL(this.editedCoverImage)
+          else {
+              return `${baseURL}/public/${this.editedCoverImage}`
+          }
+        }else return null;
+      } else
+        return this.newBlogCoverImage
+          ? URL.createObjectURL(this.newBlogCoverImage)
+          : null;
     },
     title: {
       get() {
@@ -115,8 +128,23 @@ export default {
           title: val,
           content: this.editedBlog.content,
           id: this.editedBlog.id,
+          coverImage: this.editedBlog.coverImage
         });
       },
+    },
+    editedCoverImage: {
+      get() {
+        console.log("Cover Image ", this.editedBlog.coverImage);
+        return this.editedBlog.coverImage;
+      },
+      set(val) {
+        this.setEditedBlog({ ...this.editedBlog, coverImage: val });
+      },
+    },
+    imageURL() {
+      return this.isEditMode && !this.previewImage
+        ? `${baseURL}/public/${this.editedCoverImage}`
+        : this.previewImage;
     },
   },
 };

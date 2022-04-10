@@ -11,7 +11,7 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
-          <v-card> <CreateBlog /></v-card>
+          <v-card> <EditBlog /></v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
@@ -54,9 +54,10 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import CreateBlog from "../CreateBlog";
+
 export default {
   props: ["blogs"],
-  components: { CreateBlog },
+  components: { EditBlog:CreateBlog },
   data: () => ({
     dialogDelete: false,
     headers: [
@@ -125,9 +126,10 @@ export default {
     initialize() {},
 
     editItem(item) {
-      const {id,title,content} = item;
+      console.log(item);
+      const {id,title,content,coverImage} = item;
       this.dialog = true;
-      this.setEditedBlog({id,title,content});
+      this.setEditedBlog({id,title,content,coverImage});
     },
 
     deleteItem(item) {

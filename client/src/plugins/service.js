@@ -56,8 +56,12 @@ instance.interceptors.response.use(
   }
 );
 
-instance.fetchBlogs = async () => {
-  return (await instance.get("/blog")).data;
+instance.fetchBlogs = async ({page,limit}) => {
+  let url = "/blog";
+  page = page || 1;
+  limit = limit || 10;
+  url += `?page=${page}&limit=${limit}`;
+  return (await instance.get(url)).data;
 };
 
 instance.fetchBlogById = async (id) => {
@@ -89,8 +93,11 @@ instance.panel.createBlog = async (blog) => {
   return (await instance.post("/panel/createBlog", blog)).data;
 };
 instance.panel.updateBlog = async (blog) => {
-  const { id, title, content } = blog;
-  blog = { title, content };
+  const { id, title, content,coverImage } = blog;
+  const formData = new FormData();
+  formData.append("image", coverImage);
+  const coverImageFileName = (await instance.post("/panel/uploadImage", formData)).data.file
+  blog = { title, content,coverImage:coverImageFileName };
   return (await instance.put(`/panel/blog/${id}`, blog)).data;
 };
 

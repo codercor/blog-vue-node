@@ -16,6 +16,7 @@ const authorModule = {
       id: null,
       title: "",
       content: "",
+      coverImage:""
     },
     isEditMode: false,
   },
@@ -27,9 +28,9 @@ const authorModule = {
       state.isEditMode = payload;
     },
     setEditedBlog(state, payload) {
-      console.log("setEditBlog", payload);
       state.editedBlog.title = payload.title;
       state.editedBlog.content = payload.content;
+      state.editedBlog.coverImage = payload.coverImage;
       state.editedBlog.id = payload.id;
     },
     setIsAuthenticated(state, payload) {

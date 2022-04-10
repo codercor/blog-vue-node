@@ -10,7 +10,18 @@ const getMany = async (req, res) => {
       limit,
       offset: (page - 1) * limit,
     }); //tüm tabloyu vermeyeceğiz burada düzenleme yapacağız !
-    res.json(blogs);
+    const totalItem = await BlogModel.count();
+    const pageCount = Math.ceil(await totalItem / limit);
+    
+    res.json({
+      meta:{
+        pageCount,
+        page,
+        limit,
+        totalItem
+      },
+      blogs
+    });
   } catch (error) {
     res.status(500).json(error);
   }

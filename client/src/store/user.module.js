@@ -3,6 +3,7 @@ const userModule = {
     namespaced: true,
     state: {
         blogs:[],
+        blogsMeta:{},
         currentBlogId:null,
     },
     mutations: {
@@ -11,12 +12,18 @@ const userModule = {
       },
       setCurrentBlogId(state,payload){
         state.currentBlogId = Number(payload);
+      },
+      setBlogsMeta(state,payload){
+        state.blogsMeta = payload;
       }
     },
     actions: {
-        async getBlogs({commit}){
-            let blogs = await service.fetchBlogs();
+        async getBlogs({commit},{page,limit}){
+            const data = (await service.fetchBlogs({page,limit}));
+            let blogs =  data.blogs;
+            let blogsMeta = data.meta;
             commit('setBlogs',blogs); 
+            commit('setBlogsMeta',blogsMeta);
         },
         async getBlogById({commit,state},id){
             commit('setCurrentBlogId',(id));

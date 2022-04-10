@@ -23,12 +23,13 @@
       <v-card class="mt-5" elevation="19" outlined tile>
         <v-card-title> {{ blog.title }} </v-card-title>
         <v-card-subtitle>
-          {{ blogDate }} Tarihinde Orhan tarafından yazıldı.
+          {{ blogDate }}
         </v-card-subtitle>
         <v-card-text v-html="blog.content"> </v-card-text> </v-card
     ></template>
   </v-container>
 </template>
+
 
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -48,11 +49,12 @@ export default {
   computed: {
     ...mapGetters("user", ["blog"]),
     blogDate() {
-      let date = new Date(this.blog.createdAt);
+      let isUpdated = this.blog.createdAt != this.blog.updatedAt
+      let date = new Date( isUpdated ? this.blog.updatedAt : this.blog.createdAt);
       let day = date.getDate();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
-      return `${day}.${month}.${year}`;
+      return `${day}.${month}.${year} tarihinde ${ isUpdated ? 'güncellendi':"yazıldı"  } `;
     },
     backgroundImage() {
       return this.blog.coverImage
