@@ -26,8 +26,8 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: [1, 3, 5, 10, 15, 20, 50],
-      selectedPerPage: 10,
+      // perPage: [1, 3, 5, 10, 15, 20, 50],
+      //selectedPerPage: 10,
     };
   },
   mounted() {
@@ -45,6 +45,9 @@ export default {
   },
   computed: {
     ...mapGetters("user", ["blogs"]),
+    ...mapGetters("user",["perPage"]),
+    ...mapGetters("user",["selectedPerPage"]),
+
   },
   watch: {
     page() {

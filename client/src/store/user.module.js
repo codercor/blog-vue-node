@@ -5,6 +5,8 @@ const userModule = {
         blogs:[],
         blogsMeta:{},
         currentBlogId:null,
+        perPage: [1, 3, 5, 10, 15, 20, 50],
+        selectedPerPage:10
     },
     mutations: {
       setBlogs(state,payload){
@@ -42,6 +44,12 @@ const userModule = {
         },
         blog(state){
             return state.blogs.find(blog => blog.id === state.currentBlogId);
+        },
+        perPage(state){
+            return state.perPage
+        },
+        selectedPerPage(state){
+            return state.selectedPerPage
         }
     }
 }
