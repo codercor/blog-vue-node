@@ -3,7 +3,7 @@ const axios = require("axios");
 const router = require("../router");
 const store = require("../store");
 
-export const baseURL = "http://localhost:3000";
+export const baseURL = "https://vuenodeblog.herokuapp.com/";
 const instance = axios.create({
   baseURL,
 });
