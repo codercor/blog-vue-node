@@ -7,7 +7,7 @@
       <v-col cols="10" class="pagination-buttons">
         <v-pagination
           v-model="page"
-          :length="22"
+          :length="blogsMeta.pageCount"
           :total-visible="7"
         ></v-pagination>
       </v-col>
@@ -21,15 +21,9 @@
 <script>
 import BlogCard from "../../components/User/Home/BlogCard.vue";
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
-  data() {
-    return {
-      page: 1,
-      // perPage: [1, 3, 5, 10, 15, 20, 50],
-      //selectedPerPage: 10,
-    };
-  },
+ 
   mounted() {
     this.getBlogs({
       page: this.page,
@@ -42,12 +36,26 @@ export default {
   },
   methods: {
     ...mapActions("user", ["getBlogs"]),
+    ...mapMutations("user",["setPage","setSelectedPerPage"])
   },
   computed: {
-    ...mapGetters("user", ["blogs"]),
-    ...mapGetters("user",["perPage"]),
-    ...mapGetters("user",["selectedPerPage"]),
-
+    ...mapGetters("user", ["blogs","perPage","blogsMeta"]),
+    page:{
+      get() {
+        return this.$store.state.user.page;
+      },
+      set(val) {
+       this.setPage(val);
+      }
+    },
+    selectedPerPage:{
+      get() {
+        return this.$store.state.user.selectedPerPage;
+      },
+      set(val) {
+        this.setSelectedPerPage(val);
+      }
+    }
   },
   watch: {
     page() {
