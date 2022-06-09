@@ -159,12 +159,12 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.blogs[this.editedIndex], this.editedItem);
-      } else {
-        this.blogs.push(this.editedItem);
-      }
-      this.close();
+      // if (this.editedIndex > -1) {
+      //   Object.assign(this.blogs[this.editedIndex], this.editedItem);
+      // } else {
+      //   this.blogs.push(this.editedItem);
+      // }
+      // this.close();
     },
   },
   filters: {
